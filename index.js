@@ -1,6 +1,7 @@
 
 import express from 'express';
 import path from "path";
+import cors from 'cors';      
 import pokemon from './schema/pokemon.js';
 import { DEFAULT_LANG, transformPokemon } from './utils/language.js';
 import { buildFilters, buildSort } from './utils/filters.js';
@@ -9,6 +10,10 @@ import { buildPagination, formatResponse } from './utils/response.js';
 import './connect.js';
 
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
 
 /* Rend les images accessible au public */
 app.use("/assets", express.static(path.join(process.cwd(), "assets")));
