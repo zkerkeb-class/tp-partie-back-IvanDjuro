@@ -1,10 +1,14 @@
 
 import express from 'express';
+import path from "path";
 import pokemon from './schema/pokemon.js';
 
 import './connect.js';
 
 const app = express();
+
+/* Rend les images accessible au public */
+app.use("/assets", express.static(path.join(process.cwd(), "assets")));
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
