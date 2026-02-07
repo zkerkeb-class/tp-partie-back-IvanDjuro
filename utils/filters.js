@@ -50,7 +50,7 @@ export const buildSort = (sortBy, order, lang) => {
         case 'attack': sort['base.Attack'] = sortOrder; break;
         case 'defense': sort['base.Defense'] = sortOrder; break;
         case 'speed': sort['base.Speed'] = sortOrder; break;
-        case 'id': sort['base.Id'] = sortOrder; break;
+        case 'id': sort['id'] = sortOrder; break;
         default: sort.id = 1;
     }
 
