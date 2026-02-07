@@ -22,6 +22,7 @@ export const transformPokemon = (poke, lang) => {
         type: poke.type,
         base: poke.base,
         image: poke.image,
-        _id: poke._id
+        _id: poke._id,
+        cry: poke.cry
     };
 };

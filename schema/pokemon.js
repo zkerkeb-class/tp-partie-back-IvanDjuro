@@ -28,6 +28,10 @@ const pokemonSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    cry: {
+        type: String,
+        required: true,
+    },
 });
 
 
