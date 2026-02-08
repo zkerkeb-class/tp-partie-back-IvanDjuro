@@ -10,12 +10,18 @@ import './connect.js';
 
 const app = express();
 
-// Middleware pour parser le JSON
-app.use(express.json());
+
 
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
+
+// Middleware pour parser le JSON
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 /* Rend les images accessible au public */
 app.use("/assets", express.static(path.join(process.cwd(), "assets")));
@@ -166,7 +172,8 @@ app.post('/pokemons', async (req, res) => {
                 SpecialDefense: req.body.base.SpecialDefense,
                 Speed: req.body.base.Speed
             },
-            image: req.body.image || `http://localhost:3000/assets/pokemons/${newId}.png`
+            image: req.body.image || `http://localhost:3000/assets/pokemons/${newId}.png`,
+            cry: req.body.cry || '' // Toujours inclure le champ cry, même s'il est vide
         });
 
         await newPokemon.save();
