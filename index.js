@@ -2,6 +2,7 @@ import express from 'express';
 import path from "path";
 import cors from 'cors';      
 import pokemon from './schema/pokemon.js';
+import users from './schema/users.js';
 import { DEFAULT_LANG, transformPokemon } from './utils/language.js';
 import { buildFilters, buildSort } from './utils/filters.js';
 import { buildPagination, formatResponse } from './utils/response.js';
@@ -335,4 +336,39 @@ app.delete('/pokemons/:id', async (req, res) => {
 
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
+});
+
+
+// On utilise app.post car on envoie des données (username/password)
+app.post('/login', async (req, res) => {
+    try {
+        // 1. Récupérer les données envoyées par le front
+        const { username, password } = req.body;
+
+        // 2. Chercher dans la collection "users" (ton modèle User)
+        // Attention : assure-toi d'avoir importé ton modèle User
+        const user = await users.findOne({ username: username });
+
+        // 3. Logique de vérification
+        if (!user) {
+            return res.status(404).send('Utilisateur non trouvé');
+        }
+
+        if (user.password === password) {
+            // Si le mot de passe correspond, on renvoie les infos de l'utilisateur (sans le pass)
+            res.json({
+                message: "Authentification réussie",
+                user: {
+                    id: user.id,
+                    username: user.username
+                }
+            });
+        } else {
+            // 401 signifie "Unauthorized"
+            res.status(401).send('Mot de passe incorrect');
+        }
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 });
