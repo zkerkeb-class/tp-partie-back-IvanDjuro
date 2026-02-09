@@ -346,12 +346,13 @@ app.post('/login', async (req, res) => {
         const { username, password } = req.body;
 
         // 2. Chercher dans la collection "users" (ton modèle User)
-        // Attention : assure-toi d'avoir importé ton modèle User
         const user = await users.findOne({ username: username });
 
         // 3. Logique de vérification
         if (!user) {
-            return res.status(404).send('Utilisateur non trouvé');
+            return res.status(404).json({ 
+                message: 'Utilisateur non trouvé' 
+            });
         }
 
         if (user.password === password) {
@@ -365,10 +366,14 @@ app.post('/login', async (req, res) => {
             });
         } else {
             // 401 signifie "Unauthorized"
-            res.status(401).send('Mot de passe incorrect');
+            res.status(401).json({ 
+                message: 'Mot de passe incorrect' 
+            });
         }
 
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).json({ 
+            message: error.message 
+        });
     }
 });
